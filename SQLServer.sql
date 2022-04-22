@@ -90,3 +90,96 @@ drop table Employees;
 declare @num as int =50,@num2 as int =80,@num3 as int;
 set @num3=90;
 select @num+@num2+@num3 as sum 
+
+
+-- class 4
+--key constraints (rules)
+drop table Employees;
+--not null
+create table Employees(emp_id int,emp_name char(30),salary float);
+
+insert into employees(emp_name,salary) values('aman',20000.788);
+select * from Employees;
+-- -----------------------------------
+create table Employees(emp_id int not null,emp_name char(30),salary float);
+insert into employees(emp_name,salary) values('aman',20000.788);--error
+select * from Employees;
+
+--unique
+create table Employees(emp_id int unique,emp_name char(30),salary float);
+insert into employees values(101,'aman',20000.788);
+insert into employees values(101,'aman',20000.788);--error
+select * from Employees;
+--not null unique
+drop table Employees;
+create table Employees(emp_id int not null unique,emp_name char(30),salary float);
+insert into employees(emp_name,salary) values('aman',20000.788);--error
+insert into employees values(101,'aman',20000.788);
+insert into employees values(101,'aman',20000.788);--error
+select * from Employees;
+-- primary key(not null & unique) (only one in table)
+drop table Employees;
+create table Employees(emp_id int primary key,emp_name char(30),salary float);
+insert into employees(emp_name,salary) values('aman',20000.788);--error
+insert into employees values(101,'aman',20000.788);
+insert into employees values(101,'aman',20000.788);--error
+select * from Employees;
+create table Employees(emp_id int primary key,emp_name char(30) primary key,salary float);--error
+
+-- composite primary key
+create table Employees(emp_id int,emp_name char(30),salary float,primary key(emp_id,emp_name));
+insert into employees values(101,'aman',20000.788);
+insert into employees values(101,'aman2',20000.788);
+select * from Employees;
+
+--default
+drop table Employees;
+create table Employees(emp_id int default(100),emp_name char(30),salary float);
+insert into employees(emp_name,salary) values('aman',20000.788);
+insert into employees values(101,'aman',20000.788);
+insert into employees values(101,'aman',20000.788);--error
+select * from Employees;
+
+--foreign key
+--student teacher
+use mydatabase;
+create table categories (cat_id int primary key,cat_name varchar(50),description varchar(50));
+
+create table products(ctgry_id int,pro_id int primary key,prod_name varchar(50),price float,
+foreign key (ctgry_id) references categories(cat_id));
+
+insert into categories values(101,'laptop','devices');
+insert into products values(101,201,'dell vestro',75000);
+
+insert into products values(102,202,'lenovo',75000);--error
+
+delete from categories where cat_id=101;--error
+update categories set cat_id=103 where cat_id=101;--error
+
+
+drop table categories;--error
+drop table products;
+drop table categories;
+
+create table products(ctgry_id int,pro_id int primary key,prod_name varchar(50),price float,
+constraint mera_rule foreign key (ctgry_id) references categories(cat_id));
+
+
+exec sp_help categories;
+
+    --[ ON delete { NO ACTION | CASCADE | SET NULL | SET DEFAULT } ] 
+	--[ ON UPDATE { NO ACTION | CASCADE | SET NULL | SET DEFAULT } ] 
+
+create table categories (cat_id int primary key,cat_name varchar(50),description varchar(50));
+
+create table products(ctgry_id int,pro_id int primary key,prod_name varchar(50),price float,
+constraint mera_rule foreign key (ctgry_id) references categories(cat_id)
+on delete set null);
+
+insert into categories values(101,'laptop','devices');
+insert into products values(101,201,'dell vestro',75000);
+
+delete from categories where cat_id=101;
+
+select * from categories;
+select * from products;
