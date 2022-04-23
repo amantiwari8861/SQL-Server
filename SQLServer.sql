@@ -183,3 +183,47 @@ delete from categories where cat_id=101;
 
 select * from categories;
 select * from products;
+use mydatabase;
+
+--class 5
+create table students(roll_no int primary key,name varchar(50),
+class varchar(50),address varchar(50),city varchar(50));
+
+use mydatabase;
+select * from AdventureWorks2017.HumanResources.Employee;
+
+insert into students 
+select top 100 BusinessEntityID,jobTitle,vacationHours,loginId,MaritalStatus
+from AdventureWorks2017.HumanResources.Employee;
+
+select * from students;
+
+drop table students;
+
+--Alter 
+alter table students add phone varchar(20);--added column
+alter table students --modify column
+alter column name varchar(255); 
+
+exec sp_help studentz;
+alter table students--dropping column
+drop column name;
+
+exec sp_rename 'students', 'studentz'; --renaming table
+
+select * from studentz;
+
+exec sp_rename 'Studentz.roll_no','Student_id','column'; --renaming column
+
+alter table studentz 
+alter column address varchar(50) not null;
+insert into studentz(student_id) values(null);
+
+
+alter table products nocheck constraint mera_rule  ;--to disable foreignkey
+select * from categories;
+select * from products;
+
+alter table products check constraint mera_rule;--to enable foreignkey
+  
+
