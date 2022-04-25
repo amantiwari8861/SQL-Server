@@ -155,7 +155,7 @@ insert into products values(102,202,'lenovo',75000);--error
 
 delete from categories where cat_id=101;--error
 update categories set cat_id=103 where cat_id=101;--error
-
+use mydatabase;
 
 drop table categories;--error
 drop table products;
@@ -217,6 +217,7 @@ exec sp_rename 'Studentz.roll_no','Student_id','column'; --renaming column
 
 alter table studentz 
 alter column address varchar(50) not null;
+alter column address varchar(50) primary key;
 insert into studentz(student_id) values(null);
 
 
@@ -226,4 +227,107 @@ select * from products;
 
 alter table products check constraint mera_rule;--to enable foreignkey
   
+--class 6
+select * from AdventureWorks2017.HumanResources.Employee order by JobTitle asc;--sorting alphabetically
+select * from AdventureWorks2017.HumanResources.Employee order by JobTitle desc;
 
+
+
+create table checkorder (id int,name varchar(50),groupname varchar(50));
+
+select * from AdventureWorks2017.HumanResources.Department order by Name , GroupName asc;
+--just picked some data from here then added some extra data 
+
+insert into checkorder(name,groupname) 
+select name,groupname from AdventureWorks2017.HumanResources.Department;
+
+
+select * from checkorder;
+
+insert into checkorder(name,groupname) values
+('Engineering','Assistant'),
+('Engineering','Bssistant'),
+('Engineering','Ssistant'),
+('Engineering','Ossistant');
+
+select * from checkorder order by name,groupname;
+
+insert into checkorder(name,groupname) values
+('Finance','Assistant'),
+('Finance','Bssistant'),
+('Finance','Ssistant'),
+('Finance','Ossistant');
+
+--joins
+
+use mydatabase;
+create table categories (category_id int primary key,category_name varchar(50),description varchar(50));
+
+create table products(category_id int,product_id int primary key,product_name varchar(50),price float,
+foreign key (category_id) references categories(category_id));
+
+insert into categories values
+(101,'phones','	any description'),
+(102,'laptop','	any description'),
+(103,'fashion','any description'),
+(104,'food','	any description'),
+(105,'guns','	any description');
+
+insert into products values
+(101,201,'realme xt',5600.89),
+(101,202,'redmi note 9',5006.89),
+(102,203,'hp',5876.89),
+(102,204,'dell vestro',59886.89),
+(105,205,'M416',54446.89),
+(null,206,'shirt1',5226.89),
+(null,207,'jeans',5787876.89);
+
+--inner join
+select * from categories
+inner join products
+on categories.category_id = products.category_id;
+
+--shortcut
+select * from categories as c
+inner join products as p
+on c.category_id = p.category_id;
+
+--left join or left outer join
+select * from categories as c
+left join products as p
+on c.category_id = p.category_id;
+
+
+--right join or right outer join
+select * from categories as c
+right join products as p
+on c.category_id = p.category_id;
+
+--full outer join
+select * from categories as c
+full join products as p
+on c.category_id = p.category_id;
+
+--only left(A)
+select * from categories as c
+left join products as p
+on c.category_id = p.category_id
+where p.category_id is null;
+
+--only right
+select * from categories as c
+right join products as p
+on c.category_id = p.category_id
+where c.category_id is null;
+
+--remove duplicate from both
+select * from categories as c
+full join products as p
+on c.category_id = p.category_id
+where c.category_id is null or
+p.category_id is null;
+
+
+
+drop table products;
+drop table categories;
