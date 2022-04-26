@@ -331,3 +331,33 @@ p.category_id is null;
 
 drop table products;
 drop table categories;
+
+
+--class 7
+
+select * from AdventureWorks2017.Person.Address order by city;
+
+select city,count(*) as 'Total Employee'  
+from AdventureWorks2017.Person.Address
+group by City order by City;
+
+select city,count(*) as 'Total employee',sum(AddressID) as 'Total salary' ,AVG(addressId) 'average salary'
+from AdventureWorks2017.Person.Address
+group by city order by City;
+
+select MAX(addressID) 'maximum salary',MIN(addressid) 'minimum salary',city
+from AdventureWorks2017.Person.Address
+group by city order by City;
+
+select *  
+from AdventureWorks2017.Person.Address
+group by city 
+--where addressid>500 wrong
+order by City;
+
+use BikeStore;
+select * from BikeStore.INFORMATION_SCHEMA.TABLES;
+select * from BikeStore.sales.customers;
+
+
+select * from BikeStore.production.products order by category_id;
