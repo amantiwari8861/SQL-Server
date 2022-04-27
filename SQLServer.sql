@@ -359,5 +359,60 @@ use BikeStore;
 select * from BikeStore.INFORMATION_SCHEMA.TABLES;
 select * from BikeStore.sales.customers;
 
-
 select * from BikeStore.production.products order by category_id;
+
+--class 8
+
+select * from BikeStore.production.products
+
+select category_id,count(*) 'products in category ',
+sum(list_price) 'category total price'
+from BikeStore.production.products
+group by(category_id)
+order by category_id;
+
+
+select category_id,count(*) 'products in category ',
+sum(list_price) 'category total price'
+from BikeStore.production.products
+--where sum(list_price)>20000
+group by(category_id)
+having sum(list_price) > 20000
+order by category_id;
+
+
+select category_id,model_year,count(*) 'total production'
+from BikeStore.production.products
+group by category_id,model_year
+having category_id=1
+order by category_id;
+
+--subquery
+
+select * from BikeStore.production.products
+
+--give me those bikes details whose price is greater than
+--Electra Moto 1-2016 bike's price
+
+--1st way
+select list_price from BikeStore.production.products
+where product_name='Electra Moto 1 - 2016';--529.99
+
+select * from BikeStore.production.products
+where list_price>529.99
+order by list_price;
+
+--2nd way (by sub query)
+select * from BikeStore.production.products
+where list_price>(select list_price from BikeStore.production.products
+where product_name='Electra Moto 1 - 2016')
+order by list_price;
+
+--views
+use mydatabase;
+
+create view EmployeeData as
+select JobTitle,BirthDate,HireDate,Gender
+from AdventureWorks2017.HumanResources.Employee;
+
+select * from EmployeeData order by HireDate;
