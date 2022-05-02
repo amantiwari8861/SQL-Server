@@ -416,3 +416,53 @@ select JobTitle,BirthDate,HireDate,Gender
 from AdventureWorks2017.HumanResources.Employee;
 
 select * from EmployeeData order by HireDate;
+
+
+--stored procedure
+use mydatabase;
+create procedure getEmpData 
+as 
+begin
+select * from EmployeeData order by HireDate;
+end;
+
+exec getEmpData;
+--stored procedure by variable
+
+create procedure getDataByJobTitle
+@xyz varchar(50)
+as
+begin
+select * from EmployeeData 
+where JobTitle=@xyz
+end;
+
+exec getDataByJobTitle 'Design Engineer';
+exec getDataByJobTitle 'Tool designer';
+exec getDataByJobTitle 'network administrator';
+
+create procedure getDataByJobTitleAndgender
+@xyz varchar(50),@gen char
+as
+begin
+select * from EmployeeData 
+where JobTitle=@xyz and Gender=@gen
+end;
+
+exec getDataByJobTitleAndgender 'accountant','f';
+
+select * from EmployeeData  order by JobTitle;
+
+drop procedure getDataByJobTitle;
+drop procedure getDataByJobTitleAndgender;
+drop procedure getEmpData;
+select * from sys.procedures;
+
+use mydatabase;
+ALTER procedure getEmpData 
+as 
+begin
+select * from mydatabase.dbo.studentz ;
+end;
+
+exec getEmpData;
