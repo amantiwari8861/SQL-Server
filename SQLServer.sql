@@ -466,3 +466,59 @@ select * from mydatabase.dbo.studentz ;
 end;
 
 exec getEmpData;
+
+--dcl (data control language)
+create login developer with password='1234';
+create user aman for login developer;
+
+grant select on mydatabase.studentz to aman ;
+
+alter user sa with password='1234';
+
+--tcl
+--commit rollback savepoint
+use mydatabase;
+select * from studentz;
+
+begin transaction
+insert into studentz values(102,56,'noida','delhi',9891)
+insert into studentz values(103,78,'noida','delhi',9891)
+commit transaction
+
+begin transaction
+insert into studentz values(104,56,'noida','delhi',9891)
+insert into studentz values(104,78,'noida','delhi',9891)
+if(@@ERROR >=1)
+rollback transaction
+else
+commit transaction
+
+begin transaction
+insert into studentz values(104,56,'noida','delhi',9891)
+insert into studentz values(105,78,'noida','delhi',9891)
+if(@@ERROR >=1)
+rollback transaction
+else
+commit transaction
+
+
+-- creating savepoints
+begin transaction
+insert into studentz values(104,56,'noida','delhi',9891)
+insert into studentz values(105,78,'noida','delhi',9891)
+insert into studentz values(106,78,'noida','delhi',9891)
+save transaction firstsavepoint
+insert into studentz values(107,78,'noida','delhi',9891)
+insert into studentz values(107,78,'noida','delhi',9891)
+if(@@ERROR >=1)
+rollback transaction firstsavepoint
+else
+commit transaction
+
+use mydatabase;
+select * from studentz;
+truncate table studentz;
+
+begin transaction
+drop table studentz;
+commit transaction
