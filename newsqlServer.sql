@@ -62,3 +62,30 @@ select name,dob from employee where name='aman';
 update employee set dob='1947/08/15' where name='aman';
 
 delete from employee where name='amit';
+
+
+-- 
+use Test2;
+
+create table Students(rollno int);
+
+insert into Students values(21);
+
+alter table students add address varchar(10),gender char(10);--adding columns
+alter table students drop column gender,address;--dropping columns
+alter table students alter column gender varchar(30); --modifying columns
+exec sp_rename 'students' ,'Employee'; --table rename
+exec sp_rename 'students.gender' ,'gen'; --column rename
+
+
+
+
+
+
+exec sp_help students;
+
+select * from Students;
+select * from Employee;
+
+
+drop table employee;
