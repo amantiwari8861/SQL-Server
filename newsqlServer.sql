@@ -89,3 +89,63 @@ select * from Employee;
 
 
 drop table employee;
+
+
+use AdventureWorks2017 ;
+
+select * from INFORMATION_SCHEMA.TABLES;
+
+select * from HumanResources.JobCandidate;
+
+select * from Sales.vSalesPerson;
+
+select * from Sales.vSalesPerson where CountryRegionName='united states';
+select * from Sales.vSalesPerson where BusinessEntityID > 276;
+select * from Sales.vSalesPerson where BusinessEntityID < 276;
+select * from Sales.vSalesPerson where BusinessEntityID >= 276;
+select * from Sales.vSalesPerson where BusinessEntityID <= 276;
+select * from Sales.vSalesPerson where FirstName like 'R%';
+select * from Sales.vSalesPerson where FirstName like '%l';
+select * from Sales.vSalesPerson where FirstName like '%l%';
+select * from Sales.vSalesPerson where FirstName in ('linda','Michael','Aman');
+
+
+select * from Sales.vSalesPerson 
+where BusinessEntityID >280 and BusinessEntityID<285;
+
+
+select * from Sales.vSalesPerson 
+where BusinessEntityID =285 or BusinessEntityID<280;
+
+select * from Sales.vSalesPerson 
+where not BusinessEntityID<280;
+
+
+select * from Sales.vSalesPerson 
+where BusinessEntityID <> 280;
+
+
+select * from Sales.vSalesPerson 
+order by FirstName;
+
+select * from Sales.vSalesPerson 
+order by FirstName asc;
+
+select * from Sales.vSalesPerson 
+order by FirstName desc;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
