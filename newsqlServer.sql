@@ -19,7 +19,7 @@ line
 comment
 */
 
-
+/*
 select * from sys.databases;
 
 drop database Amandb;
@@ -137,15 +137,121 @@ order by FirstName desc;
 
 
 
+create table emp1(id int ,name varchar(255));
+
+insert into emp1 values(100,'aman'),(101,'sharad');
+
+select * from emp1;
+
+update emp1 set name='vishal' where id=100;
+
+drop table emp1;
+-- ------------------------------------------------
+
+create table emp1(id int unique not null ,name varchar(255),mobile bigint unique not null);
+
+insert into emp1 values(100,'aman',9891062743),(101,'sharad',8448179216);
+insert into emp1(id,name) values(103,'aman 2'),(104,'sharad');
+insert into emp1 values(105,'aman',9891062743),(106,'sharad',8448179216);
+
+select * from emp1;
+
+update emp1 set name='vishal' where id=100;
+
+insert into emp1(name) values('rohit yadav');
 
 
 
+create table emp1(id int primary key ,name varchar(255),mobile bigint unique not null);
+
+insert into emp1 values(100,'aman',9891062743),(101,'sharad',8448179216);
+insert into emp1(name,mobile) values('aman',9891062743);
+
+exec sp_help emp1;
+
+create table emp1(id int,name varchar(255),
+mobile bigint unique not null
+,primary key(id)
+);
+
+insert into emp1 values(100,'aman',9891062743),(101,'sharad',8448179216);
+insert into emp1(name,mobile) values('aman',9891062743);
+
+exec sp_help emp1;
+
+drop table emp1;
+
+
+create table emp1(id int,name varchar(255),
+mobile bigint unique not null
+,constraint id_primary primary key(id)
+);
+
+insert into emp1 values(100,'aman',9891062743),(101,'sharad',8448179216);
+insert into emp1(name,mobile) values('aman',9891062743);
+
+exec sp_help emp1;
+
+
+create table emp1(name varchar(255),father_name varchar(255),
+address varchar(255)
+,constraint id_primary primary key(name,father_name)
+);
+
+insert into emp1 values
+('Jones','thomas','star tower usa'),
+('Jones','fernandez','new york usa'),
+('jennie','thomas','san fransisco usa'),
+('jennie','fernandez','texas usa');
+
+insert into emp1 values ('Jones','fernandez','gvvjgvjhhj usa');
+
+exec sp_help emp1;
+
+
+create table emp1(id int identity(1000,1) ,name varchar(255) ,
+father_name varchar(255),
+address varchar(255),
+constraint id_primary primary key(id)
+);
+
+insert into emp1(name,father_name,address) values
+('Jones','thomas','star tower usa'),
+('Jones','fernandez','new york usa'),
+('jennie','thomas','san fransisco usa'),
+('jennie','fernandez','texas usa');
+
+insert into emp1 values ('Jones','fernandez','gvvjgvjhhj usa');
+
+exec sp_help emp1;
+
+select * from emp1;
+
+insert into emp1 values (1004,'Jones','thomas','star tower usa');
+insert into emp1(id,name,father_name,address) values (105,'Jones','thomas','star tower usa');
 
 
 
+create table emp1(id int,name varchar(255),father_name varchar(255),
+address varchar(255) default 'Delhi'
+,constraint id_primary primary key(id)
+);
 
+insert into emp1 values (105,'Jones','thomas','star tower usa');
+insert into emp1(id,name,father_name) values (106,'Jones','thomas');
+select * from emp1;
 
+*/
 
+create table emp1(id int,name varchar(255),father_name varchar(255),
+city varchar(255) check (city in ('Delhi','Mumbai'))
+,constraint id_primary primary key(id)
+);
 
+-- insert into emp1 values (105,'Jones','thomas','star tower usa');
+insert into emp1 values (105,'Jones','thomas','delhi');
+insert into emp1 values (106,'Jones','thomas','Mumbai');
+insert into emp1(id,name,father_name) values (107,'Jones','thomas');
+select * from emp1;
 
-
+drop table emp1;
