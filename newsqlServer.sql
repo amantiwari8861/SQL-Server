@@ -241,7 +241,7 @@ insert into emp1 values (105,'Jones','thomas','star tower usa');
 insert into emp1(id,name,father_name) values (106,'Jones','thomas');
 select * from emp1;
 
-*/
+
 
 create table emp1(id int,name varchar(255),father_name varchar(255),
 city varchar(255) check (city in ('Delhi','Mumbai'))
@@ -255,3 +255,69 @@ insert into emp1(id,name,father_name) values (107,'Jones','thomas');
 select * from emp1;
 
 drop table emp1;
+*/
+
+
+Use Test2;
+
+create table Categories
+(category_id int primary key,
+category_name varchar(255),
+description varchar(255));
+
+create table Products(
+Product_id int primary key,
+category_id int,
+product_name varchar(255),
+description varchar(255),
+-- foreign key(category_id) references Categories(category_id)
+constraint categoryRule foreign key(category_id) references Categories(category_id) --better approach
+);
+
+exec sp_help Categories;
+exec sp_help products;
+
+insert into Categories values
+(101,'phones','any description'),
+(102,'laptop','any description'),
+(305,'fashion','any description');
+
+insert into Products values
+(201,101,'realme xt','hello 1'),
+(202,101,'redmi note 9','hello 2'),
+(203,102,'hp','hello 3'),
+(204,102,'dell vostro','hello 4'),
+(205,305,'denim shirts','hello 5');
+
+select * from Categories;
+select * from Products;
+
+insert into Products values
+(206,107,'Realme GT','abcd');
+
+drop table Categories; --error
+drop table products;
+drop table Categories;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
