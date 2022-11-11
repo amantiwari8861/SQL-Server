@@ -257,7 +257,7 @@ select * from emp1;
 drop table emp1;
 */
 
-
+/*
 Use Test2;
 
 create table Categories
@@ -298,7 +298,97 @@ insert into Products values
 drop table Categories; --error
 drop table products;
 drop table Categories;
+*/
 
+
+
+Use Test2;
+
+create table Categories
+(category_id int primary key,
+category_name varchar(255),
+description varchar(255));
+
+create table Products(
+Product_id int primary key,
+cat_id int,
+product_name varchar(255),
+description varchar(255),
+constraint categoryRule foreign key(cat_id) references Categories(category_id) --better approach
+);
+
+exec sp_help Categories;
+exec sp_help products;
+
+insert into Categories values
+(101,'phones','any description'),
+(102,'laptop','any description'),
+(305,'fashion','any description');
+
+insert into Products values
+(201,101,'realme xt','hello 1'),
+(202,101,'redmi note 9','hello 2'),
+(203,102,'hp','hello 3'),
+(204,102,'dell vostro','hello 4'),
+(205,305,'denim shirts','hello 5');
+
+select * from Categories;
+select * from Products;
+
+insert into Products values
+(206,107,'Realme GT','abcd');
+
+drop table Categories; --error
+drop table products;
+drop table Categories;
+
+
+-- variables
+declare @a as int=69
+--set @a=10
+--set @a=15
+select @a as 'A ki value'
+
+
+declare @num as int = 56,@num2 as int =89,@sum as int
+set @sum=@num+@num2
+
+select @sum 
+
+create table Demotable(deptid int,EmpName varchar(255),deptName varchar(255));
+
+select * from AdventureWorks2017.HumanResources.Department;
+
+insert into Demotable  select DepartmentID,Name,
+GroupName from AdventureWorks2017.HumanResources.Department;
+
+select * from Demotable;
+
+select top 10 empname+' with id '+convert(varchar,deptid)+' works in '+deptname
+as formatted_data from Demotable;
+
+
+select empname+' with id '+convert(varchar,deptid)+' works in '+deptname
+as formatted_data from Demotable
+order by deptid -- it is mandatory gto use offset fetch
+offset 10 rows fetch next 3 rows only;
+
+
+create table Acc(salary float);
+insert into Acc values
+(10000),
+(0000),
+(5000),
+(15000),
+(18000),
+(8000);
+
+select salary as 'CTC',salary*70/100 as 'in hand',
+salary+5000 as 'incentive',salary/12 as 'monthly salary'
+from Acc;
+
+select salary%27  from acc;
+alter table acc alter column salary int;
 
 
 
