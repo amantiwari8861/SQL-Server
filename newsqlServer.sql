@@ -298,7 +298,7 @@ insert into Products values
 drop table Categories; --error
 drop table products;
 drop table Categories;
-*/
+
 
 
 
@@ -389,16 +389,106 @@ from Acc;
 
 select salary%27  from acc;
 alter table acc alter column salary int;
+*/
+
+-- joins
+Use Test2;
+
+create table Categories
+(category_id int primary key,
+category_name varchar(255),
+description varchar(255));
+
+create table Products(
+Product_id int primary key,
+category_id int,
+product_name varchar(255),
+description varchar(255),
+constraint categoryRule foreign key(category_id) references Categories(category_id)
+);
+
+insert into Categories values
+(101,'phones','any description'),
+(102,'laptop','any description'),
+(103,'fashion','any description'),
+(104,'food','any description'),
+(105,'guns','any description');
+
+insert into Products values
+(201,101,'realme xt','hello 1'),
+(202,101,'redmi note 9','hello 2'),
+(203,102,'hp','hello 3'),
+(204,102,'dell vostro','hello 4'),
+(205,105,'AkM','hello 5'),
+(206,null,'denim shirts','hello 6'),
+(207,null,'Levies','hello 7');
 
 
+select * from categories;
+select * from products;
+
+insert into Categories values (106,'fast food','burger');
+--  inner join 
+
+select * from Categories
+inner join Products 
+on Categories.category_id = Products.category_id;
+
+select * from Categories as c
+inner join Products as p
+on c.category_id = p.category_id;
 
 
+-- left join
+select * from Categories as c
+left join Products as p
+on c.category_id = p.category_id;
+
+select * from Categories as c
+left join Products as p
+on c.category_id = p.category_id
+order by p.category_id ;
+
+-- right join
+
+select * from Categories as c
+right join Products as p
+on c.category_id = p.category_id
+order by c.category_id ;
+
+-- only right 
+select * from Categories as c
+right join Products as p
+on c.category_id = p.category_id
+where c.category_id is null;
+
+-- only left 
+
+select * from Categories as c
+left join Products as p
+on c.category_id = p.category_id
+where p.category_id is null;
+
+-- full join
+select * from Categories as c
+full outer join Products as p
+on c.category_id = p.category_id;
+
+select * from Categories as c
+full join Products as p
+on c.category_id = p.category_id;
 
 
+select * from Categories as c
+full join Products as p
+on c.category_id = p.category_id
+order by p.Product_id;
 
-
-
-
+-- remove common from full join
+select * from Categories as c
+full join Products as p
+on c.category_id = p.category_id
+where c.category_id is null or p.category_id is null;
 
 
 
