@@ -491,6 +491,72 @@ on c.category_id = p.category_id
 where c.category_id is null or p.category_id is null;
 
 
+--grouping
+
+select * from AdventureWorks2017.INFORMATION_SCHEMA.TABLES;
+
+select * from AdventureWorks2017.HumanResources.Employee;
+
+select * from AdventureWorks2017.HumanResources.Employee Emp;
+
+
+select * from AdventureWorks2017.HumanResources.Employee Emp
+order by JobTitle,Gender desc;
+
+-- aggregate
+select count(*) 'total rows' from AdventureWorks2017.HumanResources.Employee;
+select sum(BusinessEntityID) sum from AdventureWorks2017.HumanResources.Employee;
+select (sum(BusinessEntityID)/290) average from AdventureWorks2017.HumanResources.Employee;
+select AVG(BusinessEntityID) average from AdventureWorks2017.HumanResources.Employee;
+select min(BusinessEntityID) minimum from AdventureWorks2017.HumanResources.Employee;
+select max(BusinessEntityID) maximum from AdventureWorks2017.HumanResources.Employee;
+
+
+
+select JobTitle,count(*) 'number of employees'
+from AdventureWorks2017.HumanResources.Employee Emp
+group by JobTitle
+order by JobTitle;
+
+select JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
+from AdventureWorks2017.HumanResources.Employee Emp
+group by JobTitle
+order by JobTitle;
+
+
+select birthdate,JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
+from AdventureWorks2017.HumanResources.Employee Emp
+group by JobTitle
+order by JobTitle; -- error 
+
+
+select * from AdventureWorks2017.HumanResources.Employee Emp
+order by JobTitle,BirthDate,gender;
+
+select birthdate,JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
+from AdventureWorks2017.HumanResources.Employee Emp
+group by JobTitle,BirthDate
+order by JobTitle; 
+
+-- clauses on group by
+select birthdate,JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
+from AdventureWorks2017.HumanResources.Employee Emp
+group by JobTitle,BirthDate
+where gender='M'
+order by JobTitle; --error
+
+
+select birthdate,JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
+from AdventureWorks2017.HumanResources.Employee Emp
+where gender='M'
+group by JobTitle,BirthDate
+order by JobTitle; --error
+
+select birthdate,JobTitle,gender,count(*) 'total male'
+from AdventureWorks2017.HumanResources.Employee Emp
+where gender='M'
+group by JobTitle,BirthDate,Gender
+order by JobTitle;
 
 
 

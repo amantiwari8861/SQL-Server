@@ -89,7 +89,7 @@ drop table Employees;
 
 declare @num as int =50,@num2 as int =80,@num3 as int;
 set @num3=90;
-select @num+@num2+@num3 as sum 
+select @num+@num2+@num3 as sum
 
 
 -- class 4
