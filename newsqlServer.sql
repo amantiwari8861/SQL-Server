@@ -559,6 +559,100 @@ group by JobTitle,BirthDate,Gender
 order by JobTitle;
 
 
+-- filtering of data
+
+select * from AdventureWorks2017.HumanResources.Employee Emp
+order by JobTitle,BirthDate,gender;
+
+select JobTitle,VacationHours,count(*)
+from AdventureWorks2017.HumanResources.Employee
+where VacationHours>54
+group by JobTitle,VacationHours
+order by JobTitle,VacationHours;
+
+
+select JobTitle,sum(VacationHours) 'total vacation hours'
+from AdventureWorks2017.HumanResources.Employee
+group by JobTitle
+order by JobTitle;
+
+-- in which jobtitle the sum of vacation hours is > than 100
+
+select JobTitle,sum(VacationHours) 'total vacation hours'
+from AdventureWorks2017.HumanResources.Employee
+ where sum(VacationHours)>100 -- error
+group by JobTitle
+order by JobTitle;
+
+
+select JobTitle,sum(VacationHours) 'total vacation hours'
+from AdventureWorks2017.HumanResources.Employee
+group by JobTitle
+ where sum(VacationHours)>100 -- error
+order by JobTitle;
+
+select JobTitle,sum(VacationHours) 'total vacation hours'
+from AdventureWorks2017.HumanResources.Employee
+group by JobTitle
+having sum(VacationHours)>100
+order by JobTitle;
+
+/*
+A HAVING clause is like a WHERE clause, but applies only to groups 
+as a whole (that is, to the rows in the result set representing groups),
+whereas the WHERE clause applies to individual rows.
+*/
+
+
+select JobTitle,sum(VacationHours) 'total vacation hours'
+from AdventureWorks2017.HumanResources.Employee
+group by JobTitle
+having sum(VacationHours) between 55 and 150
+order by JobTitle;
+
+
+-- 
+create table Group1(jobtitle varchar(255),total_vac_hr int);
+
+insert into Group1 
+select JobTitle,sum(VacationHours) 'total vacation hours'
+from AdventureWorks2017.HumanResources.Employee
+group by JobTitle
+having sum(VacationHours) between 55 and 150
+order by JobTitle;
+
+select * from Group1;
+
+-- subquery
+
+
+select * from AdventureWorks2017.HumanResources.Employee Emp
+order by JobTitle,BirthDate,gender;
+
+
+select BusinessEntityID from AdventureWorks2017.HumanResources.Employee
+where VacationHours>55;
+
+select BusinessEntityID,JobTitle,Gender
+from AdventureWorks2017.HumanResources.Employee
+where BusinessEntityID in (
+select BusinessEntityID 
+from AdventureWorks2017.HumanResources.Employee
+where VacationHours>55);
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
 
 
 
