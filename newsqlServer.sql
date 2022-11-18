@@ -630,24 +630,124 @@ select * from AdventureWorks2017.HumanResources.Employee Emp
 order by JobTitle,BirthDate,gender;
 
 
-select BusinessEntityID from AdventureWorks2017.HumanResources.Employee
+select BusinessEntityID 
+from AdventureWorks2017.HumanResources.Employee
 where VacationHours>55;
+
+
 
 select BusinessEntityID,JobTitle,Gender
 from AdventureWorks2017.HumanResources.Employee
 where BusinessEntityID in (
+--where BusinessEntityID =Any (
 select BusinessEntityID 
 from AdventureWorks2017.HumanResources.Employee
 where VacationHours>55);
 
 
+USE AdventureWorks2016;
+SELECT Name,ListPrice
+FROM Production.Product
+WHERE ListPrice >
+    (SELECT AVG (ListPrice)  --438
+     FROM Production.Product);
 
 
 
+/*
+> ALL means greater than every value. In other words, it means greater than 
+the maximum value. For example, > ALL (1, 2, 3) means greater than 3.
+> ANY means greater than at least one value, that is, greater than the minimum.
+So > ANY (1, 2, 3) means greater than 1.
+
+
+    <> ANY means not = a, or not = b, or not = c
+    NOT IN means not = a, and not = b, and not = c
+    <> ALL means the same as NOT IN
+
+*/
+
+SELECT Name,ListPrice
+FROM Production.Product -- start 0.00 end 3578
+WHERE ListPrice >= ANY
+    (SELECT MAX (ListPrice) -- start 7.95 end 3578
+     FROM Production.Product
+     GROUP BY ProductSubcategoryID)
+order by ListPrice;
+
+
+select ProductSubcategoryID,ListPrice 
+from Production.Product
+order by ListPrice desc;
+
+
+SELECT Name,ListPrice
+FROM Production.Product -- start 0.00 end 3578
+WHERE ListPrice >=all
+    (SELECT MAX (ListPrice) -- start 7.95 end 3578
+     FROM Production.Product
+     GROUP BY ProductSubcategoryID)
+order by ListPrice;
+
+
+SELECT CustomerID,TerritoryID -- 1-10
+FROM Sales.Customer --1-2-7-19 ....
+WHERE TerritoryID <> ANY
+    (SELECT TerritoryID
+     FROM Sales.SalesPerson
+	 );-- 1-10
+	-- removed null value
+/* 
+<>Any	Means not equal to any
+value in the list.
+The expression |
+column_name <>ANY (10,
+20, 30) means ‘not equal to
+10 or 20 or 30’.
+*/
+-- make an example on it
 
 
 
- 
+	 use BikeStore;
+SELECT    customer_id,    first_name,    last_name,    city
+FROM
+    sales.customers c
+WHERE
+    EXISTS (        SELECT customer_id
+        FROM
+            sales.orders o
+        WHERE
+            o.customer_id = c.customer_id
+        AND YEAR (order_date) = 2017
+    )
+ORDER BY
+    first_name,
+    last_name;
+
+
+select * from BikeStore.production.products
+
+--give me those bikes details whose price is greater than
+--Electra Moto 1-2016 bike's price
+
+--1st way
+select list_price from BikeStore.production.products
+where product_name='Electra Moto 1 - 2016';--529.99
+
+select * from BikeStore.production.products
+where list_price>529.99
+order by list_price;
+
+--2nd way (by sub query)
+select * 
+from BikeStore.production.products
+where list_price>(
+select list_price 
+from BikeStore.production.products
+where product_name='Electra Moto 1 - 2016'
+)
+order by list_price;
 
 
 
