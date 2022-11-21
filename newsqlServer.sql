@@ -14,12 +14,7 @@ drop database AmanDb;
 */
 -- single line comment;
 /* 
-multiple 
-line
-comment
-*/
-
-/*
+ 
 select * from sys.databases;
 
 drop database Amandb;
@@ -750,7 +745,73 @@ where product_name='Electra Moto 1 - 2016'
 order by list_price;
 
 
+create table tab1(col1 int);
+create table tab2(col2 int);
 
+insert into tab2 values(11),(21),(33),(43),(54);
+
+select * from tab1
+where col1<>Any(select * from tab2);
+
+select * from tab1;
+/* 
+<>Any	Means not equal to any
+value in the list.
+The expression |
+column_name <>ANY (10,
+20, 30) means ‘not equal to
+10 or 20 or 30’.
+*/
+
+-- views
+
+use AdventureWorks2017;
+select * from AdventureWorks2017.HumanResources.Employee;
+
+select BusinessEntityID,JobTitle,Gender,BirthDate,MaritalStatus
+from AdventureWorks2017.HumanResources.Employee;
+
+create view EmployeeView2 as 
+select BusinessEntityID,JobTitle,Gender,BirthDate,MaritalStatus
+from AdventureWorks2017.HumanResources.Employee;
+
+select * from EmployeeView2;
+
+insert into EmployeeView2 values(291,'Developer','M','2000-10-25','S');
+
+-- 
+create table EmployeeTable(BusinessEntityID int,
+JobTitle varchar(255),Gender varchar(255),BirthDate varchar(255)
+,MaritalStatus varchar(255));
+
+insert into EmployeeTable select BusinessEntityID,
+JobTitle,Gender,BirthDate,MaritalStatus
+from AdventureWorks2017.HumanResources.Employee;
+
+create view EmpView as 
+select BusinessEntityID,JobTitle,MaritalStatus
+from AdventureWorks2017.dbo.EmployeeTable;
+
+select * from EmpView;
+
+insert into EmpView values(291,'developer','S');
+
+select * from EmployeeTable;
+
+alter view EmpView as 
+select BusinessEntityID,JobTitle,MaritalStatus,gender,BirthDate
+from AdventureWorks2017.dbo.EmployeeTable;
+
+
+alter view EmpView as 
+select BusinessEntityID bigint,JobTitle,MaritalStatus,gender,BirthDate
+from AdventureWorks2017.dbo.EmployeeTable;
+
+exec sp_help EmpView;
+
+exec sp_rename EmpView,EmployeeView3;
+
+select * from EmployeeView3;
 
 
 
