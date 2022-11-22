@@ -813,7 +813,10 @@ exec sp_rename EmpView,EmployeeView3;
 
 select * from EmployeeView3;
 
+-- importing excel data 
 
+EXEC master.sys.sp_MSset_oledb_prop;
+--https://stackoverflow.com/questions/67132014/the-microsoft-ace-oledb-15-0-provider-is-not-registered-on-the-local-machine
 
 
 
