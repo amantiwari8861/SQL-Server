@@ -144,7 +144,39 @@ select BusinessEntityID,BirthDate,JobTitle
 ,Gender,MaritalStatus,VacationHours,SickLeaveHours
 from HumanResources.Employee;
 
+-- filtering of data
+
 select * from Employee;
+use AdventureWorks2017;
+select * from Employee where MaritalStatus='M';
+select * from Employee where VacationHours<10;
+select * from Employee where VacationHours>10;
+select * from Employee where VacationHours>=10;
+select * from Employee where VacationHours<=10;
+select * from Employee where VacationHours=99;
+select * from Employee where VacationHours between 80 and 100;
+select * from Employee where JobTitle='chief executive officer';
+select * from Employee where JobTitle like '%Engineer';
+select * from Employee where JobTitle like 'Vice%';
+select * from Employee where JobTitle like '%dev%';
+select * from Employee where JobTitle not like '%dev%';
+select * from Employee where MaritalStatus='M' and VacationHours>50;
+select * from Employee where MaritalStatus='M' or VacationHours>50;
+select * from Employee where not VacationHours <10;
+
+select * from Employee where JobTitle in ('Sales Representative','European Sales Manager','Database Administrator');
+
+select * from Employee order by JobTitle ;
+select * from Employee order by JobTitle desc;
+
+select * from Employee order by SickLeaveHours ;
+select * from Employee order by MaritalStatus,VacationHours ;
+
+
+
+
+
+
 
 
 

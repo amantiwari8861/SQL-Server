@@ -472,8 +472,27 @@ create login developer with password='1234';
 create user aman for login developer;
 
 grant select on mydatabase.studentz to aman ;
-
+revoke select,insert,update,delete on mydatabase.studentz from aman;
 alter user sa with password='1234';
+ALTER LOGIN developer DISABLE;
+ALTER LOGIN developer ENABLE;
+drop LOGIN developer;
+revoke connect from aman;
+drop user if exists aman;
+alter user aman with login=designer;
+alter role db_datareader add member aman;
+grant select on database::bikestores to aman;
+
+create role frontend;
+alter role frontend with name=angular;
+create login dev with password='xyz'
+create user rohit for login dev;
+alter role angular add member rohit;
+alter role angular drop member rohit;
+drop role if exists angular;
+grant select on schema::Sales to frontend;
+alter role frontend add member aman;
+alter role frontend drop member aman;
 
 --tcl
 --commit rollback savepoint

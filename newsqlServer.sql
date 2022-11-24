@@ -819,7 +819,19 @@ EXEC master.sys.sp_MSset_oledb_prop;
 --https://stackoverflow.com/questions/67132014/the-microsoft-ace-oledb-15-0-provider-is-not-registered-on-the-local-machine
 
 
+-- DCL (data control language)
+use AdventureWorks2017;
+create login backendDev with password='12345';
+create user rohit for login backenddev;
+grant select on Adventureworks2017.Humanresources.employee to rohit;
+drop login backendDev;
+drop user rohit;
 
+create database testDb;
+use testdb;
+create table temp1(col1 int);
+create user ankit for login backenddev;
+grant select,insert on temp1 to ankit;
 
 
 
