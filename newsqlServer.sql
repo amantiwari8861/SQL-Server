@@ -820,18 +820,30 @@ EXEC master.sys.sp_MSset_oledb_prop;
 
 
 -- DCL (data control language)
-use AdventureWorks2017;
-create login backendDev with password='12345';
-create user rohit for login backenddev;
-grant select on Adventureworks2017.Humanresources.employee to rohit;
-drop login backendDev;
-drop user rohit;
-
 create database testDb;
 use testdb;
+create login backendDev with password='12345';
+create user rohit for login backenddev;
+
 create table temp1(col1 int);
-create user ankit for login backenddev;
-grant select,insert on temp1 to ankit;
+grant select on temp1 to rohit;
+
+drop login backendDev;
+insert into temp1 values(101),(102);
+
+grant insert,update,delete on temp1 to rohit;
+grant all on temp1 to rohit;
+
+revoke delete on temp1 from rohit;
+
+deny insert on temp1 to rohit;
+revoke connect from rohit; -- revoking permission from users to connect with database
+grant connect to rohit;-- granting permission from users to connect with database
+
+alter login backenddev disable;
+alter login backenddev enable;
+
+drop user rohit;
 
 
 
