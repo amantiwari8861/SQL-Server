@@ -125,7 +125,6 @@ use Test3;
 select * from demo.dbo.student;
 drop database  demo;
 
-*/
 use AdventureWorks2017;
 select * from INFORMATION_SCHEMA.TABLES;
 select * from HumanResources.Employee;
@@ -171,6 +170,98 @@ select * from Employee order by JobTitle desc;
 
 select * from Employee order by SickLeaveHours ;
 select * from Employee order by MaritalStatus,VacationHours ;
+
+-- constraints (rules)
+
+--unique & not null
+create table AadharCard(uid int unique not null,name varchar(255)
+unique not null,address varchar(100));
+
+insert into AadharCard values(101,'dolly','noida');
+insert into AadharCard values(103,'dolly3','noida');
+insert into AadharCard(name,address) values('dolly2','noida');
+
+select * from AadharCard;
+
+drop table AadharCard;
+
+-- default
+create table AadharCard(uid int unique not null,
+name varchar(255) unique not null default 'No Name',
+address varchar(100));
+
+insert into AadharCard values(101,'dolly','noida');
+insert into AadharCard(uid,address) values(102,'noida');
+insert into AadharCard values(103,null,'noida');
+
+select * from AadharCard;
+
+--primary key
+create table AadharCard(uid int primary key,name varchar(255)
+unique not null,address varchar(100));
+
+insert into AadharCard values(101,'dolly','noida');
+insert into AadharCard(name,address) values('dolly','noida');
+
+create table class6(name varchar(255),fname varchar(255),city varchar(255),
+primary key(name,fname));
+
+insert into class6 values('aman','xyz','delhi');
+insert into class6 values('aman','abc','delhi');
+insert into class6 values('dolly','xyz','delhi');
+insert into class6 values('dolly','abc','delhi');
+
+select * from class6;
+
+insert into class6 values('dolly','abc','delhi');
+*/
+use testDb;
+create table Courses(courseId int primary key identity(1000,2)
+,cname varchar(255) not null,
+price int,duration float,description varchar(255));
+
+insert into courses(cname,price,duration,description)
+values 
+('C Programming 2022',3500,25,'basics of c'),
+('c++ Programming 2022',5500,55,'basics of c++'),
+('java Programming 2022',8500,65,'basics of java'),
+('python Programming 2022',3500,25,'basics of '),
+('.Net Programming 2022',7500,25,'basics of '),
+('Ruby Programming 2022',8500,25,'basics of '),
+('Scala Programming 2022',9500,25,'basics of ');
+
+select * from Courses;
+
+create table Learners(
+id int primary key identity(200,2),name varchar(255),
+course_enrolled int,email varchar(255),
+start_date datetime2 default current_timestamp,
+foreign key(course_enrolled) references courses(courseid)
+);
+
+insert into Learners(name,course_enrolled,email) values
+('aman',1004,'aman@gmail.com'),
+('dolly',1002,'dolly@gmm.com'),
+('dolly',1006,'dolly@gmm.com'),
+('dolly',1008,'dolly@gmm.com'),
+('prince',1002,'prince@gmm.com');
+
+select * from Learners;
+
+drop table Learners;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
