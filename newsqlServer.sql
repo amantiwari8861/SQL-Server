@@ -846,6 +846,103 @@ alter login backenddev enable;
 drop user rohit;
 
 
+-- TCL (transaction control language) for DML
+
+-- ACID 
+-- Atomicity 
+-- consistency 
+-- Isolation
+-- Durability
+
+create table Paytm(tid int,owner varchar(255),Amount int);
+create table PhonePe(pid int,phowner varchar(255),phAmount int);
+
+insert into Paytm values 
+(101,'Aman',10000),
+(102,'Faizal',15000),
+(103,'Rohit',2500);
+
+insert into PhonePe values 
+(101,'Ankit',10000),
+(102,'Lakshya',15000),
+(103,'Sharad',2500);
+
+select * from Paytm;
+select * from PhonePe;
+drop table Paytm;
+drop table PhonePe;
+
+begin transaction sendMoney
+update Paytm set Amount=(select Amount where tid=101)-500 where tid=101;
+update PhonePe set phAmount=(select phAmount where pid=101)+500 where pid=101;
+commit ;
+
+
+begin transaction sendMoney1
+update Paytm set Amount=(select Amount where tid=101)-500 where tid=101;
+delete from phonepe where pid=101;
+insert into phonepe values(101,'ankit',1000);
+
+if (@@ERROR >0)
+rollback transaction sendMoney1
+else
+commit ;
+
+
+
+create table studentz(id int primary key,Amount_in_lac int,
+city varchar(255),state varchar(255),num int); 
+select * from studentz;
+
+begin transaction
+insert into studentz values(102,56,'noida','delhi',9891)
+insert into studentz values(103,78,'noida','delhi',9891)
+commit transaction
+
+begin transaction
+insert into studentz values(104,56,'noida','delhi',9891)
+insert into studentz values(104,78,'noida','delhi',9891)
+if(@@ERROR >=1)
+rollback transaction
+else
+commit transaction
+
+begin transaction
+insert into studentz values(104,56,'noida','delhi',9891)
+insert into studentz values(105,78,'noida','delhi',9891)
+if(@@ERROR >=1)
+rollback transaction
+else
+commit transaction
+
+set xact_abort off;
+-- creating savepoints
+begin transaction
+insert into studentz values(106,78,'noida','delhi',9891)
+save transaction firstsavepoint
+insert into studentz values(107,78,'noida','delhi',9891)
+insert into studentz values(107,78,'noida','delhi',9891)
+if(@@ERROR >=1)
+rollback transaction firstsavepoint
+else
+commit transaction
+
+select * from studentz;
+truncate table studentz;
+
+begin transaction
+drop table studentz;
+commit transaction
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -246,21 +246,69 @@ insert into Learners(name,course_enrolled,email) values
 ('dolly',1008,'dolly@gmm.com'),
 ('prince',1002,'prince@gmm.com');
 
+
 select * from Learners;
 
 drop table Learners;
 
+insert into testDb.dbo.Learners(name,email) values('xyz','xyz@gmail.com');
+insert into testDb.dbo.Learners(name,email) values('fresher1','xyz@gmail.com');
+insert into testDb.dbo.Learners(name,email) values('fresher2','xyz@gmail.com');
 
 
+-- joins
+--inner join
+select * from Courses
+inner join Learners 
+on Courses.courseId=Learners.course_enrolled;
+
+--using alias
+select * from Courses as c
+inner join Learners  as l
+on c.courseId=l.course_enrolled;
 
 
+--left join
+select * from Courses c
+left join Learners l
+on c.courseId=l.course_enrolled
+order by l.course_enrolled;
 
 
+--right join
+select * from Courses c
+right join Learners l
+on c.courseId=l.course_enrolled
+order by c.courseId;
 
+--only right
+select * from Courses c
+right join Learners l
+on c.courseId=l.course_enrolled
+where c.courseId is null
+order by c.courseId;
 
+--only left
+select * from Courses c
+left join Learners l
+on c.courseId=l.course_enrolled
+where l.course_enrolled is null
+order by c.courseId;
 
+--full outer
+select * from Courses c
+full outer join Learners l
+on c.courseId=l.course_enrolled
+order by l.Id;
 
+--full outer (removed common part)
+select * from Courses c
+full outer join Learners l
+on c.courseId=l.course_enrolled
+where c.courseId is null or l.course_enrolled is null
 
+--cross join
+select * from Courses,learners;
 
 
 
