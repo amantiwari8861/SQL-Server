@@ -384,7 +384,7 @@ from Acc;
 
 select salary%27  from acc;
 alter table acc alter column salary int;
-*/
+
 
 -- joins
 Use Test2;
@@ -854,91 +854,86 @@ drop user rohit;
 -- Isolation
 -- Durability
 
-create table Paytm(tid int,owner varchar(255),Amount int);
-create table PhonePe(pid int,phowner varchar(255),phAmount int);
+*/
 
-insert into Paytm values 
-(101,'Aman',10000),
-(102,'Faizal',15000),
-(103,'Rohit',2500);
+create table UserOrders(id int primary key,priceEach float,
+p_name varchar(255),quantity varchar(255),category varchar(50)); 
 
-insert into PhonePe values 
-(101,'Ankit',10000),
-(102,'Lakshya',15000),
-(103,'Sharad',2500);
+select * from UserOrders;
 
-select * from Paytm;
-select * from PhonePe;
-drop table Paytm;
-drop table PhonePe;
-
-begin transaction sendMoney
-update Paytm set Amount=(select Amount where tid=101)-500 where tid=101;
-update PhonePe set phAmount=(select phAmount where pid=101)+500 where pid=101;
-commit ;
+begin transaction 
+insert into UserOrders values(100,500,'shirt',3,'cloth');
+commit;
 
 
-begin transaction sendMoney1
-update Paytm set Amount=(select Amount where tid=101)-500 where tid=101;
-delete from phonepe where pid=101;
-insert into phonepe values(101,'ankit',1000);
+begin transaction 
+delete from UserOrders where id=100;
+print 'transaction rollbacked!'
+rollback;
 
-if (@@ERROR >0)
-rollback transaction sendMoney1
-else
-commit ;
+begin transaction 
+insert into UserOrders values(101,500,'shirt',3,'cloth');
+insert into UserOrders values(102,1500,'jeans',3,'cloth');
+insert into UserOrders values(102,5000,'jeans2',3,'cloth');
+commit;
 
+-- above method is wrong because it is not supporting the rule of Atomicity
+-- to perform atomicity we have two ways 
+-- 1. use try-catch
+-- 2. SET XACT_ABORT ON 
 
+truncate table userorders;
 
-create table studentz(id int primary key,Amount_in_lac int,
-city varchar(255),state varchar(255),num int); 
-select * from studentz;
+BEGIN TRY  --write suspicious code in try
+       BEGIN TRAN   
+		insert into UserOrders values(101,500,'shirt',3,'cloth');
+		insert into UserOrders values(102,1500,'jeans',3,'cloth');
+		--insert into UserOrders values(102,5000,'jeans2',3,'cloth'); -- try toggling this comment
+       COMMIT TRAN  
+END TRY  
+BEGIN CATCH  -- if there is any error in try then it will execute
+		print ' error occured thats why we r rollbacking the transaction'
+       ROLLBACK TRAN  
+END CATCH
 
-begin transaction
-insert into studentz values(102,56,'noida','delhi',9891)
-insert into studentz values(103,78,'noida','delhi',9891)
-commit transaction
+select * from UserOrders;
 
-begin transaction
-insert into studentz values(104,56,'noida','delhi',9891)
-insert into studentz values(104,78,'noida','delhi',9891)
-if(@@ERROR >=1)
-rollback transaction
-else
-commit transaction
+/*We can also achieve the atomicity by setting XACT_ABORT to ON. By setting XACT_ABORT
+to ON and we can rollback all the statements inside a transaction when an error occurred. */
 
-begin transaction
-insert into studentz values(104,56,'noida','delhi',9891)
-insert into studentz values(105,78,'noida','delhi',9891)
-if(@@ERROR >=1)
-rollback transaction
-else
-commit transaction
+truncate table userorders;
 
-set xact_abort off;
--- creating savepoints
-begin transaction
-insert into studentz values(106,78,'noida','delhi',9891)
-save transaction firstsavepoint
-insert into studentz values(107,78,'noida','delhi',9891)
-insert into studentz values(107,78,'noida','delhi',9891)
-if(@@ERROR >=1)
-rollback transaction firstsavepoint
-else
-commit transaction
-
-select * from studentz;
-truncate table studentz;
-
-begin transaction
-drop table studentz;
-commit transaction
+insert into UserOrders values(100,500,'shirt',3,'cloth');
 
 
+SET XACT_ABORT ON;  -- always select this line in transaction 
+BEGIN TRAN   
+		insert into UserOrders values(101,500,'shirt',3,'cloth');
+		insert into UserOrders values(102,1500,'jeans',3,'cloth');
+		insert into UserOrders values(102,5000,'jeans2',3,'cloth'); -- try toggling this comment
+COMMIT TRAN;
+
+select * from UserOrders;
+
+-- savepoint 
+
+truncate table userorders;
+
+	set XACT_ABORT off; -- always include this in this transaction
+    BEGIN TRAN   
+		insert into UserOrders values(101,500,'shirt',3,'cloth');
+		save transaction s1;
+		insert into UserOrders values(102,1500,'jeans',3,'cloth');
+		insert into UserOrders values(102,5000,'jeans2',3,'cloth'); -- try toggling this comment
+		if( @@ERROR >=0) 
+		begin --same as { in java or c
+				print ' error occured thats why we r rollbacking the transaction to s1'
+			ROLLBACK tran s1;
+		end --same as } in java or c
+	COMMIT TRAN;
 
 
-
-
+select * from UserOrders;
 
 
 

@@ -541,3 +541,122 @@ truncate table studentz;
 begin transaction
 drop table studentz;
 commit transaction
+
+    Create table Test_tran  
+    (  
+                    ID Int Primary key,  
+                    Name varchar(10)  
+    );
+BEGIN TRAN  
+INSERT INTO Test_Tran ( ID, Name) VALUES (1,'Amit')  
+INSERT INTO Test_Tran ( ID, Name) VALUES (2,'Kapil')  
+INSERT INTO Test_Tran ( ID, Name) VALUES (1,'Aditya')  
+COMMIT TRAN 
+
+We can see that even when the transaction failed, records got inserted; which is not the correct way. To avoid such a situation, we need to make the transaction atomic which means that either all the statements in the transaction execute successfully or none of them if any of the statements failed.
+
+Here now, I am defining two methods to achieve the atomicity of transaction.
+
+    Using Try/CATCH block
+    Using XACT_ABORT
+
+
+BEGIN TRY  
+       BEGIN TRAN  
+       INSERT INTO Test_Tran ( ID, Name) VALUES (1,'Amit')  
+       INSERT INTO Test_Tran ( ID, Name) VALUES (2,'Kapil')  
+       INSERT INTO Test_Tran ( ID, Name) VALUES (1,'Aditya')  
+       COMMIT TRAN  
+END TRY  
+BEGIN CATCH  
+       ROLLBACK TRAN  
+END CATCH
+
+We can also achieve the atomicity by setting XACT_ABORT to ON. By setting XACT_ABORT to ON and we can rollback all the statements inside a transaction when an error occurred.
+
+    SET XACT_ABORT ON  
+    BEGIN TRAN  
+           INSERT INTO Test_Tran ( ID, Name) VALUES (1,'Amit')  
+           INSERT INTO Test_Tran ( ID, Name) VALUES (2,'Kapil')  
+           INSERT INTO Test_Tran ( ID, Name) VALUES (1,'Aditya')  
+    COMMIT TRAN 
+
+
+CREATE PROCEDURE uspProductList
+AS
+BEGIN
+    SELECT 
+        product_name, 
+        list_price
+    FROM 
+        production.products
+    ORDER BY 
+        product_name;
+END;
+
+EXECUTE sp_name;
+
+Or
+
+EXEC sp_name;
+
+ ALTER PROCEDURE uspProductList
+    AS
+    BEGIN
+        SELECT 
+            product_name, 
+            list_price
+        FROM 
+            production.products
+        ORDER BY 
+            list_price 
+    END;
+
+DROP PROCEDURE sp_name;
+DROP PROC sp_name;
+
+ALTER PROCEDURE uspFindProducts(@min_list_price AS DECIMAL)
+AS
+BEGIN
+    SELECT
+        product_name,
+        list_price
+    FROM 
+        production.products
+    WHERE
+        list_price >= @min_list_price
+    ORDER BY
+        list_price;
+END;
+
+EXEC uspFindProducts 100;
+
+ALTER PROCEDURE uspFindProducts(
+    @min_list_price AS DECIMAL
+    ,@max_list_price AS DECIMAL
+)
+AS
+BEGIN
+    SELECT
+        product_name,
+        list_price
+    FROM 
+        production.products
+    WHERE
+        list_price >= @min_list_price AND
+        list_price <= @max_list_price
+    ORDER BY
+        list_price;
+END;
+
+EXECUTE uspFindProducts 900, 1000;
+
+EXECUTE uspFindProducts 
+    @min_list_price = 900, 
+    @max_list_price = 1000;
+
+
+
+
+
+
