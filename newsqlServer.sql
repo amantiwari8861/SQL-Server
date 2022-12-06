@@ -951,6 +951,45 @@ end;
 -- it is compiled
 
 exec showLearnersData;
+execute showLearnersData;
+
+-- parameters in stored procedure
+
+
+create procedure filterLearners (@learn_id as int)
+as
+begin
+	select * from Learners
+	where id < @learn_id;
+end;
+
+exec filterLearners 210;
+
+alter proc filterlearners(@id int)
+as
+begin
+	select * from Learners
+	where id < @id;
+end;
+
+exec filterLearners 210;
+
+drop proc filterlearners;
+
+
+
+create procedure filterLearners (@min as int,@max as int)
+as
+begin
+	select * from Learners
+	where id >@min and id<@max;
+end;
+
+exec filterlearners 204,212;
+
+
+
+
 
 
 
