@@ -486,8 +486,8 @@ on c.category_id = p.category_id
 where c.category_id is null or p.category_id is null;
 
 
---grouping
-
+--grouping of data
+*/
 select * from AdventureWorks2017.INFORMATION_SCHEMA.TABLES;
 
 select * from AdventureWorks2017.HumanResources.Employee;
@@ -506,14 +506,14 @@ select AVG(BusinessEntityID) average from AdventureWorks2017.HumanResources.Empl
 select min(BusinessEntityID) minimum from AdventureWorks2017.HumanResources.Employee;
 select max(BusinessEntityID) maximum from AdventureWorks2017.HumanResources.Employee;
 
-
+--arggregate function with group
 
 select JobTitle,count(*) 'number of employees'
 from AdventureWorks2017.HumanResources.Employee Emp
 group by JobTitle
 order by JobTitle;
 
-select JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
+select JobTitle,count(*) 'number of employees',sum(sickLeaveHours) 'total sickleavehour by group'
 from AdventureWorks2017.HumanResources.Employee Emp
 group by JobTitle
 order by JobTitle;
@@ -545,7 +545,7 @@ select birthdate,JobTitle,count(*) 'number of employees',sum(sickLeaveHours)
 from AdventureWorks2017.HumanResources.Employee Emp
 where gender='M'
 group by JobTitle,BirthDate
-order by JobTitle; --error
+order by JobTitle;
 
 select birthdate,JobTitle,gender,count(*) 'total male'
 from AdventureWorks2017.HumanResources.Employee Emp
@@ -854,7 +854,7 @@ drop user rohit;
 -- Isolation
 -- Durability
 
-*/
+
 
 create table UserOrders(id int primary key,priceEach float,
 p_name varchar(255),quantity varchar(255),category varchar(50)); 
@@ -935,7 +935,22 @@ truncate table userorders;
 
 select * from UserOrders;
 
+-- stored procedure
+use testDb;
+exec sp_help courses;
+execute sp_help courses;
 
+select * from Learners;
+
+create procedure --proc
+showLearnersData as
+begin
+select * from Learners;
+end;
+
+-- it is compiled
+
+exec showLearnersData;
 
 
 
