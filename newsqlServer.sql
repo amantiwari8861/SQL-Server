@@ -792,7 +792,7 @@ create view EmpView as
 select BusinessEntityID,JobTitle,MaritalStatus
 from AdventureWorks2017.dbo.EmployeeTable;
 
-select * from EmpView;
+select * from EmpView where BusinessEntityID>288;
 
 insert into EmpView values(291,'developer','S');
 
@@ -809,7 +809,7 @@ from AdventureWorks2017.dbo.EmployeeTable;
 
 exec sp_help EmpView;
 
-exec sp_rename EmpView,EmployeeView3;
+exec sp_rename EmpView,EmployeeView5;
 
 select * from EmployeeView3;
 
@@ -847,24 +847,24 @@ drop user rohit;
 
 
 -- TCL (transaction control language) for DML
+--each transaction is a group of operations that acts as a single unit, produces consistent results
 
 -- ACID 
--- Atomicity 
+-- Atomicity  -> Atomicity is also known as the ‘All or nothing rule. 
 -- consistency 
 -- Isolation
 -- Durability
-
-
+use testDb;
 
 create table UserOrders(id int primary key,priceEach float,
 p_name varchar(255),quantity varchar(255),category varchar(50)); 
 
-select * from UserOrders;
 
-begin transaction 
+begin transaction  -- or begin tran
 insert into UserOrders values(100,500,'shirt',3,'cloth');
 commit;
 
+select * from UserOrders;
 
 begin transaction 
 delete from UserOrders where id=100;
@@ -888,7 +888,7 @@ BEGIN TRY  --write suspicious code in try
        BEGIN TRAN   
 		insert into UserOrders values(101,500,'shirt',3,'cloth');
 		insert into UserOrders values(102,1500,'jeans',3,'cloth');
-		--insert into UserOrders values(102,5000,'jeans2',3,'cloth'); -- try toggling this comment
+		insert into UserOrders values(102,5000,'jeans2',3,'cloth'); -- try toggling this comment
        COMMIT TRAN  
 END TRY  
 BEGIN CATCH  -- if there is any error in try then it will execute
@@ -942,6 +942,7 @@ execute sp_help courses;
 
 select * from Learners;
 
+use testDb;
 create procedure --proc
 showLearnersData as
 begin
@@ -963,7 +964,7 @@ begin
 	where id < @learn_id;
 end;
 
-exec filterLearners 210;
+exec filterLearners 206;
 
 alter proc filterlearners(@id int)
 as
@@ -986,9 +987,6 @@ begin
 end;
 
 exec filterlearners 204,212;
-
-
-
 
 
 
